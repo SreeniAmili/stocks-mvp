@@ -1,0 +1,7 @@
+
+CREATE TABLE IF NOT EXISTS stocks (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    current_price DECIMAL(10,2) NOT NULL,
+    last_update TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
