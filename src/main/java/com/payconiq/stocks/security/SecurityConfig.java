@@ -14,32 +14,29 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-/**
- * Security configuration for the application.
- */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    /**
-     * Configures the security filter chain for the application.
-     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/stocks/**").authenticated()
+                        .requestMatchers(
+                                "/swagger-ui/**",  // Allow Swagger UI
+                                "/v3/api-docs/**", // Allow OpenAPI JSON
+                                "/swagger-resources/**",
+                                "/webjars/**"
+                        ).permitAll()
+                        .requestMatchers("/api/stocks/**").authenticated()  // Protect stock API
                         .anyRequest().permitAll()
                 )
-                .httpBasic(withDefaults())
-                .csrf(csrf -> csrf.disable());
+                .httpBasic(withDefaults())  //  Enable HTTP Basic Authentication
+                .csrf(csrf -> csrf.disable());  //  Disable CSRF for APIs
+
         return http.build();
     }
 
-    /**
-     * Creates an in-memory user with the username "admin" and password "admin
-     * 123" with the role "ADMIN".
-     */
     @Bean
     public UserDetailsService userDetailsService() {
         UserDetails admin = User.builder()
@@ -51,11 +48,8 @@ public class SecurityConfig {
         return new InMemoryUserDetailsManager(admin);
     }
 
-    /**
-     * Creates a password encoder bean.
-     */
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder();  // Secure password encoding
     }
 }
