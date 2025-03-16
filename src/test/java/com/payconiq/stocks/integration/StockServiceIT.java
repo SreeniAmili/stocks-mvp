@@ -3,10 +3,7 @@ package com.payconiq.stocks.integration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.payconiq.stocks.model.StockDTO;
 import com.payconiq.stocks.service.StockService;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -19,7 +16,6 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.security.test.context.support.WithMockUser;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -30,11 +26,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@ExtendWith(SpringExtension.class)
 @Testcontainers
-public class StockServiceIntegrationTest {
+@ExtendWith(SpringExtension.class)
+@Tag("integration")
+public class StockServiceIT {
 
     @Autowired
     private MockMvc mockMvc;
