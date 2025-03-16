@@ -91,6 +91,7 @@ class StockServiceTest {
         StockDTO result = stockService.createStock(stockDTO);
 
         assertNotNull(result);
+
         assertEquals(stock.getName(), result.name());
     }
 

@@ -1,14 +1,14 @@
 server:
-  port: 8082
+  port: 8081
 
 spring:
   profiles:
-    active: local  # Ensures the 'local' profile is active
+    active: dev  # Ensures the 'dev' profile is active
     application:
       name: stocks-service management # Name of the application
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/stocks_db  #  Ensure the DB exists and change to your DB host
+    url: jdbc:postgresql://postgres_container:5432/stocks_db  #  Ensure the DB exists and change to your DB host
     username: postgres
     password: password
     driver-class-name: org.postgresql.Driver

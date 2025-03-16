@@ -4,7 +4,9 @@ import com.payconiq.stocks.model.StockDTO;
 import com.payconiq.stocks.service.StockService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,8 +35,8 @@ public class StockController {
      */
     @GetMapping
     @Operation(summary = "Get paginated list of stocks")
-    public List<StockDTO> getAllStocks(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-        return stockService.getAllStocks(page, size);
+    public ResponseEntity<List<StockDTO>> getAllStocks(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(stockService.getAllStocks(page, size));
     }
 
 
@@ -46,9 +48,9 @@ public class StockController {
      */
     @GetMapping("/{id}")
     @Operation(summary = "Get stock by id")
-    public StockDTO getStockById(@PathVariable Long id) {
+    public ResponseEntity<StockDTO> getStockById(@PathVariable Long id) {
 
-        return stockService.getStockById(id);
+        return ResponseEntity.ok(stockService.getStockById(id));
     }
 
 
@@ -60,8 +62,8 @@ public class StockController {
      */
     @PostMapping
     @Operation(summary = "Create a new stock")
-    public StockDTO createStock(@RequestBody StockDTO stockDTO) {
-        return stockService.createStock(stockDTO);
+    public ResponseEntity<StockDTO> createStock(@RequestBody StockDTO stockDTO) {
+        return ResponseEntity.status(201).body(stockService.createStock(stockDTO));
     }
 
 
@@ -73,8 +75,8 @@ public class StockController {
      * @return updated stock
      */
     @PatchMapping("/{id}")
-    public StockDTO updateStockPrice(@PathVariable Long id, @RequestBody StockDTO stockDTO) {
-        return stockService.updateStockPrice(id, stockDTO);
+    public ResponseEntity<StockDTO>  updateStockPrice(@PathVariable Long id, @RequestBody StockDTO stockDTO) {
+        return ResponseEntity.ok(stockService.updateStockPrice(id, stockDTO));
     }
 
     /**
@@ -83,7 +85,8 @@ public class StockController {
      * @param id stock id
      */
     @DeleteMapping("/{id}")
-    public void deleteStock(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteStock(@PathVariable Long id) {
         stockService.deleteStock(id);
+        return ResponseEntity.noContent().build();
     }
 }

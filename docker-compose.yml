@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  postgres_container:  # ✅ Define the PostgreSQL service
+    image: postgres:15
+    container_name: postgres_container
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: stocks_db
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+
+  stocks_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: stocks_app
+    restart: always
+    ports:
+      - "8082:8082"
+    depends_on:
+      - postgres_container  # ✅ Ensure PostgreSQL service is correctly referenced
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres_container:5432/stocks_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
